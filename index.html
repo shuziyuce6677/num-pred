@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>数字能量分析</title>
+<style>
+:root{--bg:#0a0a14;--card:#121222;--gold:#c9a040;--gold2:#e8d080;--text:#d8d0c0;--dim:#888478;--border:#222240;--r:12px}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;line-height:1.8;background-image:radial-gradient(ellipse at 30% 0%,rgba(201,160,64,0.05) 0%,transparent 50%),radial-gradient(ellipse at 70% 100%,rgba(64,128,176,0.04) 0%,transparent 50%)}
+.ct{max-width:520px;margin:0 auto;padding:16px}
+.hd{text-align:center;padding:24px 0 14px}
+.hd .ic{width:56px;height:56px;margin:0 auto 8px;border-radius:50%;background:linear-gradient(135deg,#2a1a08,#4a3008);display:flex;align-items:center;justify-content:center;font-size:26px;border:1px solid var(--gold)}
+.hd h1{font-size:19px;color:var(--gold2);font-weight:600;letter-spacing:2px}
+.hd p{font-size:11px;color:var(--dim)}
+.cd{background:var(--card);border-radius:var(--r);padding:16px;margin-bottom:10px;border:1px solid var(--border);box-shadow:0 4px 20px rgba(0,0,0,0.3)}
+.cd h2{font-size:14px;color:var(--gold2);margin-bottom:12px;display:flex;align-items:center;gap:7px}
+.cd h2::before{content:'';width:2px;height:14px;background:var(--gold);border-radius:1px}
+.fg{margin-bottom:10px}
+.fg label{display:block;font-size:11px;color:var(--dim);margin-bottom:4px}
+.fg input,.fg select{width:100%;padding:10px 11px;background:#0c0c1a;border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:14px;outline:none;font-family:inherit}
+.fg input:focus,.fg select:focus{border-color:var(--gold)}
+.pi{display:flex;gap:6px;align-items:center}
+.pi span{color:var(--dim);font-size:12px}
+.pi input{flex:1;padding:10px;background:#0c0c1a;border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:19px;text-align:center;letter-spacing:5px;outline:none;max-width:140px;font-family:inherit}
+.pi input:focus{border-color:var(--gold)}
+.btn{width:100%;padding:12px;background:linear-gradient(135deg,#7a5a10,#b08020);color:#1a1a0a;border:none;border-radius:7px;font-size:15px;font-weight:600;letter-spacing:2px;cursor:pointer;font-family:inherit}
+.btn:active{transform:scale(.97)}
+.err{background:rgba(192,64,64,0.15);border:1px solid rgba(192,64,64,0.3);border-radius:7px;padding:9px 12px;font-size:11px;color:#e06060;margin-bottom:8px;display:none}
+.results{display:none}
+.rc{background:var(--card);border-radius:var(--r);padding:15px;margin-bottom:8px;border:1px solid var(--border)}
+.rc h3{font-size:13px;margin-bottom:6px;display:flex;align-items:center;gap:6px;justify-content:space-between}
+.s-badge{font-size:11px;font-weight:700;padding:1px 8px;border-radius:9px}
+.s-h{background:rgba(90,154,90,0.2);color:#6aae6a}.s-m{background:rgba(201,160,64,0.18);color:#d0b060}.s-l{background:rgba(192,64,64,0.18);color:#e06060}
+.fline{font-size:12px;line-height:2;color:var(--text)}
+.fline .a{display:block;margin-bottom:2px}
+.fline .b{display:block;color:#c0b8a8;font-style:italic}
+.overview{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin:8px 0}
+.ov{background:#0c0c1a;border-radius:7px;padding:9px;text-align:center;border:1px solid var(--border)}
+.ov .lbl{font-size:9px;color:var(--dim)}.ov .val{font-size:22px;font-weight:700;color:var(--gold2);letter-spacing:2px}.ov .sub{font-size:10px;color:var(--dim)}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin:6px 0}
+.tags span{padding:2px 8px;border-radius:10px;font-size:9px}
+.tt{background:rgba(201,160,64,0.12);color:var(--gold2)}.tw{background:rgba(192,64,64,0.12);color:#e06060}.tb{background:rgba(64,128,176,0.12);color:#80b8e0}
+.disclaimer{font-size:9px;color:var(--dim);text-align:center;padding:8px;margin-top:4px;border-top:1px solid rgba(255,255,255,0.05);font-style:italic}
+.pw{background:linear-gradient(135deg,#141408,#1a1808);border:2px dashed var(--gold);border-radius:var(--r);padding:20px 16px;text-align:center;margin:14px 0;position:relative}
+.pw::before{content:'🔒';position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:24px;background:var(--bg);padding:0 8px}
+.pw h3{color:var(--gold2);font-size:15px;margin:6px 0}
+.price{font-size:24px;color:var(--gold);font-weight:700;margin:5px 0}
+.qr-img{width:150px;height:150px;margin:10px auto;border-radius:7px;overflow:hidden;border:2px solid var(--border)}
+.qr-img img{width:100%;height:100%;object-fit:contain;background:#fff}
+.ur{display:flex;gap:6px;margin-top:8px}
+.ur input{flex:1;padding:8px;background:#0c0c1a;border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:12px;text-align:center;outline:none;font-family:inherit}
+.ur button{padding:8px 16px;background:var(--gold);border:none;border-radius:6px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit}
+.locked{filter:blur(6px);pointer-events:none;user-select:none;opacity:0.3}
+.unlocked{filter:none;pointer-events:auto;user-select:auto;opacity:1}
+.dt{font-size:11px;line-height:2.1;color:#c0b8a8;margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.dt strong{color:var(--gold2);display:block;margin-top:10px;margin-bottom:3px}
+.dt .hl{color:var(--gold)}.dt .warn{color:#e06060;font-weight:600}
+.ft{text-align:center;padding:16px;font-size:9px;color:var(--dim)}
+@keyframes up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.rc{animation:up .5s ease forwards}
+</style>
+</head>
+<body>
+<div class="ct">
+<div class="hd"><div class="ic">☯</div><h1>数字能量分析</h1><p>手机号后四位 · 五行八卦解读</p></div>
+
+<div class="cd" id="inputForm"><h2>📱 输入信息</h2>
+<div class="fg"><label>手机号后四位</label><div class="pi"><span>*******</span><input type="text" id="phoneDigits" placeholder="0000" maxlength="4" inputmode="numeric"></div></div>
+<div class="fg"><label>使用时长</label><select id="duration"><option value="">请选择</option><option value="0.5">半年以内</option><option value="1">1年</option><option value="2">2年</option><option value="3">3-5年</option><option value="5">5-10年</option><option value="10">10年以上</option></select></div>
+<div class="fg"><label>性别</label><select id="gender"><option value="">请选择</option><option value="male">男</option><option value="female">女</option></select></div>
+<div class="fg"><label>年龄</label><input type="number" id="age" placeholder="请输入年龄" min="10" max="100"></div>
+<div class="err" id="errorMsg"></div>
+<button class="btn" id="analyzeBtn">⚡ 开始分析</button>
+<div class="disclaimer">⚠ 温馨提示：本系统仅供娱乐，不作生活中或人生选择的参考意见。</div>
+<div id="jsStatus" style="text-align:center;font-size:9px;color:#5a9a5a;margin-top:4px;display:none">✅ 系统就绪</div>
+</div>
+<div class="results" id="resultsSection"></div>
+<div class="ft"><p>基于数字能量结构分析 · 仅供娱乐参考</p></div>
+</div>
+
+<script>
+// ====== 一、语料库(datacorpus.json 内联) ======
+var FEATURE_TAGS={
+  '木_4_5':['进取心强','雷厉风行','容易固执','肝胆较弱','有领袖潜质','执行出色','光明磊落','不爱客套','急性子','神经敏感','有担当','乐于助人','富有朝气','骨骼强健','外表刚强内心柔软'],
+  '火_3':['脑瓜灵活','情商较高','言辞犀利','性格急躁','容易冲动','心脏需注意','善于交际','热情奔放','眼明心亮','多才多艺','艺术家气质','喜怒形于色','做事大胆','自我意识强','讲究面子','职场雷厉风行'],
+  '土_7_8_0':['稳重踏实','包容力强','固执保守','缺乏变通','脾胃需关注','思考全面','厚重敦实','内心善良','靠谱稳健','不爱社交','默默付出','善于理财','顾家','守成之人','易生闷气','不争不抢'],
+  '金_1_2_9':['控制欲强','行事果断','有领导风范','性格生硬','容易得罪人','呼吸系统需留意','执行力超群','十分理性','不留情面','严于律己','目标明确','极具魄力','爱当老大','重义气','讲究规则','抗压能力强'],
+  '水_6':['聪明过人','圆滑世故','善于谋略','交际手腕高','肾脏泌尿需保养','思维活跃','爱冒险赌运气','性格多变','格局宏大','灵活变通','善用资源','容易想太多','懂得退让','心智成熟','能屈能伸','善于隐藏情绪']
+};
+
+var RELATION_ATOMS={
+  '官鬼':['受到外部力量牵制','容易招致小人暗中拆台','前行路上阻力陡增','被环境持续施压','做事束手束脚','易惹官非口舌','外界因素令你举步维艰','压力犹如泰山压顶','日常事务繁杂压身','容易出现意外伤灾','受制于领导或长辈','人际关系十分紧张','自身想法难以施展','常遇到不公对待','仿佛身陷泥沼'],
+  '印':['有贵人出手相助','前辈长辈鼎力支持','获得极大的外部助力','身边环境对你非常友善','有利好消息从天而降','能遇高人或明师指点','受到领导的重点栽培','家宅安稳','有靠山在背后撑腰','社会资源为你所用','亲友都愿帮你','遇到困难常能迎刃而解','总能逢凶化吉','多遇雪中送炭之人','出门在外易遇贵人'],
+  '食伤':['自身精力大量外泄','常常多劳少得','为他人做嫁衣裳','整日奔波劳碌','心力交瘁','极易疲惫','吃力不讨好','付出与收获不成正比','管理下属心力憔悴','为子女操碎了心','操心劳神','自己是劳碌命','闲不下来','每天都在救火','身体被过度透支'],
+  '财':['求财欲望极其强烈','财富主动权在自己手中','能把钱财牢牢握住','有很强的赚钱野心','适合做生意创业','财源滚滚而来','偏财运势旺盛','能靠自身能力变现','财不外流','钱生钱的力量大','投资容易取得收益','物质生活富足','经商天赋极高','能驾驭金钱'],
+  '比劫':['遇到旗鼓相当的同伴','能够得到朋友的助力','团队合作顺畅','贵人与同事齐心','君子之交淡如水','彼此共情能力强','做事事半功倍','双方合力能办大事','关系融洽和睦','能结识同频之人','合作无间','事业根基稳固','有可靠合作伙伴','平辈相助','事业安定平稳']
+};
+
+var THEME={
+  career:{prefix:['事业运流转','职场方向','工作运势','官禄宫'],results:['呈步步高升之象','遭遇明显瓶颈','有小人从中作梗','适合提升能力','需要低调蛰伏','迎来高光时刻','执行力极大增强','开始受领导重视','建议多学多做','容易陷入内耗'],advice:['做好职业规划','切勿过度张扬','多读书提升认知','定期复盘工作','谨防职场PUA','多结交行业前辈','避免盲目扩张','基础务必夯实','找准方向深耕','保持谦虚低调']},
+  wealth:{prefix:['财帛宫','财运走势','求财之路','财富密码'],results:['正财收入稳步增加','偏财容易暴发','需谨防意外破财','适宜投资理财','金钱流动频繁','求财相对费力','财来财去一场空','收入渠道拓展','赚钱十分辛苦','财源广进'],advice:['避免金钱借贷','配置稳健理财','不宜大额风险投资','注意节约开支','多挖掘副业收入','优先偿还债务','钱财不宜外露','深耕老本行','偏财见好就收','守财比赚钱重要']},
+  love:{prefix:['姻缘宫','感情运程','桃花走向','夫妻宫位'],results:['容易遇到心仪对象','伴侣之间容易争吵','感情渐入佳境','陷入冷战状态','有第三者插足风险','夫妻关系紧张','桃花运旺盛','容易多疑猜忌','缺乏安全感','两人十分契合'],advice:['多和伴侣沟通内心想法','减少对伴侣的掌控欲','制造浪漫小惊喜','尽量不要翻旧账','保持适当距离','给彼此独立空间','注意异性分寸感','承诺需要兑现','真诚是必杀技','减少互相消耗']},
+  health:{prefix:['五行气机','身体元气','健康根基','体魄状态'],results:['容易损伤肝胆','心脑血管压力较大','肠胃消化功能衰退','呼吸道易受感染','肾脏泌尿系统疲惫','睡眠质量下降','容易疲劳','骨骼关节隐隐作痛','精神高度紧张','免疫力下降'],advice:['切忌熬夜过度饮酒','饮食需清淡均衡','适当进行有氧运动','留意季节更替','多按摩穴位疏通经络','控制好情绪','定期体检','少抽烟少喝浓茶','多亲近自然','学会自我减压']}
+};
+
+var EXTREME_WARN=[
+  '针对【火克金、金克木】的极点组合，前方有意外伤灾、交通磕碰的风险，务必要谨慎出行，切忌开快车或疲劳驾驶。',
+  '当前组合出现金木交战，极易引发突发性的财务破耗或法律纠纷，近期遇事建议多退一步，切勿冲动决策。',
+  '水火相冲，极易诱发心脑血管或内分泌系统的急剧紊乱，建议近期彻底放松身心，远离高压高强度生活节奏。'
+];
+
+// ====== 二、引擎层 ======
+var E2N={'1':'金','2':'金','3':'火','4':'木','5':'木','6':'水','7':'土','8':'土','9':'金','0':'土'};
+var N2G={'1':'乾','2':'兑','3':'离','4':'震','5':'巽','6':'坎','7':'艮','8':'坤','9':'乾','0':'坤'};
+var G2E={乾:'金',兑:'金',离:'火',震:'木',巽:'木',坎:'水',艮:'土',坤:'土'};
+var SHENG={木:'火',火:'土',土:'金',金:'水',水:'木'};
+var KE={金:'木',木:'土',土:'水',水:'火',火:'金'};
+function se(a,b){return SHENG[a]===b}
+function ke(a,b){return KE[a]===b}
+var DZ={0:'亥',1:'子',2:'丑',3:'寅',4:'卯',5:'辰',6:'巳',7:'午',8:'未',9:'申'};
+var TAO={子:1,卯:1,午:1,酉:1};
+var CK={丑:1,辰:1,未:1,戌:1};
+var DAYUN=[[10,20,'乾','金'],[20,30,'兑','金'],[30,40,'离','火'],[40,50,'震','木'],[50,60,'巽','木'],[60,70,'坎','水'],[70,80,'艮','土'],[80,99,'坤','土']];
+function getDy(age){for(var i=0;i<DAYUN.length;i++)if(age>=DAYUN[i][0]&&age<DAYUN[i][1])return{n:DAYUN[i][2],el:DAYUN[i][3],r:[DAYUN[i][0],DAYUN[i][1]]};return age<10?{n:'乾',el:'金',r:[10,20]}:{n:'坤',el:'土',r:[80,90]}}
+
+function parse(digits,age,gender,dur){
+  var d=digits.split(''),ec={金:0,木:0,水:0,火:0,土:0},gc={};
+  for(var i=0;i<4;i++){var el=E2N[d[i]],g=N2G[d[i]];ec[el]=(ec[el]||0)+1;gc[g]=(gc[g]||0)+1}
+  var domE='',dc=0;for(var e in ec)if(ec[e]>dc){domE=e;dc=ec[e]}
+  var domG=[];for(var g in gc)if(gc[g]>=2)domG.push(g);
+  var bz=(d[0]===d[1]&&d[1]===d[2]&&d[2]===d[3]);
+  var acc=false;for(var i=0;i<3;i++){var e1=E2N[d[i]],e2=E2N[d[i+1]];if((e1==='火'&&e2==='金')||(e1==='金'&&e2==='木'))acc=true}
+  var pal=[{n:'父母宫',dg:d[0],el:E2N[d[0]],g:N2G[d[0]],dz:DZ[d[0]]},{n:'夫妻宫',dg:d[1],el:E2N[d[1]],g:N2G[d[1]],dz:DZ[d[1]]},{n:'自身宫',dg:d[2],el:E2N[d[2]],g:N2G[d[2]],dz:DZ[d[2]]},{n:'子女宫',dg:d[3],el:E2N[d[3]],g:N2G[d[3]],dz:DZ[d[3]]}];
+  var self=pal[2],spEl=pal[1].el,selfEl=self.el;
+  // 十神：自身 vs 各宫
+  function shiShen(otherEl){
+    if(ke(otherEl,selfEl))return'官鬼';if(ke(selfEl,otherEl))return'财';
+    if(se(otherEl,selfEl))return'印';if(se(selfEl,otherEl))return'食伤';
+    return'比劫';
+  }
+  var spSS=shiShen(spEl);
+  var spR='';if(ke(spEl,selfEl))spR='ks';else if(ke(selfEl,spEl))spR='sk';else if(se(spEl,selfEl))spR='ss';else if(se(selfEl,spEl))spR='ss2';else spR='bh';
+  var ddy=getDy(age),dyR='';
+  if(se(ddy.el,selfEl))dyR='ss';else if(ke(ddy.el,selfEl))dyR='ks';else if(se(selfEl,ddy.el))dyR='ss2';else if(ke(selfEl,ddy.el))dyR='sk';else dyR='bh';
+  var ht=false,hc=false;for(var i=0;i<4;i++){if(TAO[DZ[d[i]]])ht=true;if(CK[DZ[d[i]]])hc=true}
+  return{digits:d,ec:ec,gc:gc,domE:domE,domG:domG,bz:bz,acc:acc,pal:pal,self:self,spR:spR,spSS:spSS,dy:ddy,dyR:dyR,ht:ht,hc:hc,age:age,gender:gender,dur:dur};
+}
+
+// ====== 三、语料库检索引擎 ======
+function pick(arr,seed){return arr[seed%arr.length]}
+
+function getFeatureTags(comp){
+  // 根据主导元素提取特征标签
+  var el=comp.domE,d=comp.self.dg;
+  var key=(el==='木'?'木_4_5':el==='火'?'火_3':el==='土'?'土_7_8_0':el==='金'?'金_1_2_9':'水_6');
+  var pool=FEATURE_TAGS[key]||FEATURE_TAGS['土_7_8_0'];
+  var seed=parseInt(comp.digits.join(''),10);
+  var result=[];
+  var used={};
+  for(var i=0;i<4;i++){
+    var idx=(seed+i*7)%pool.length;
+    if(!used[idx]){used[idx]=1;result.push(pool[idx])}
+  }
+  // 再加2个不同元素的标签做对比
+  var otherKeys=[];for(var k in FEATURE_TAGS)if(k!==key)otherKeys.push(k);
+  var ok=otherKeys[seed%otherKeys.length];
+  var op=FEATURE_TAGS[ok];
+  result.push(op[(seed+3)%op.length]);
+  result.push(op[(seed+11)%op.length]);
+  return result;
+}
+
+function getRelationExp(ssType,seed){
+  var pool=RELATION_ATOMS[ssType]||RELATION_ATOMS['比劫'];
+  return pick(pool,seed);
+}
+
+function getThemeAnalysis(theme,seed){
+  var t=THEME[theme];
+  return{
+    prefix:pick(t.prefix,seed),
+    result:pick(t.results,seed+1),
+    advice:pick(t.advice,seed+2)
+  };
+}
+
+function getExtremeWarn(seed){
+  return pick(EXTREME_WARN,seed);
+}
+
+// ====== 四、免费版输出(150字左右) ======
+function freeAnalysis(comp){
+  var seed=parseInt(comp.digits.join(''),10);
+  var tags=getFeatureTags(comp);
+  var career=getThemeAnalysis('career',seed);
+  var wealth=getThemeAnalysis('wealth',seed+10);
+  var love=getThemeAnalysis('love',seed+20);
+  var health=getThemeAnalysis('health',seed+30);
+
+  return{
+    tags:tags,
+    career:career,
+    wealth:wealth,
+    love:love,
+    health:health,
+    spSS:comp.spSS,
+    spRelExp:getRelationExp(comp.spSS,seed)
+  };
+}
+
+// ====== 五、付费版输出(详细) ======
+function paidAnalysis(comp){
+  var seed=parseInt(comp.digits.join(''),10);
+  var career=getThemeAnalysis('career',seed);
+  var wealth=getThemeAnalysis('wealth',seed+10);
+  var love=getThemeAnalysis('love',seed+20);
+  var health=getThemeAnalysis('health',seed+30);
+  // 四宫十神详解
+  var palAnalysis=[];
+  for(var i=0;i<4;i++){
+    var p=comp.pal[i];
+    var ss=(i===2)?'自身':(ke(p.el,comp.self.el)?'官鬼':ke(comp.self.el,p.el)?'财':se(p.el,comp.self.el)?'印':se(comp.self.el,p.el)?'食伤':'比劫');
+    palAnalysis.push({name:p.n,el:p.el,g:p.g,ss:ss,exp:getRelationExp(ss,seed+i*13)});
+  }
+  // 大运分析
+  var dyTips={
+    ss:'大运生你——有利桃花、贵人、事业顺利，适合多社交多展示。',
+    ks:'大运克你——事业坎坷、小人出没、易破财伤灾，建议谨慎行事。',
+    ss2:'你生大运——操心费力、付出多回报少，注意身体别透支。',
+    sk:'你克大运——利求财、利做生意，但需防范风险和贪心。',
+    bh:'大运比合——事业平稳，利工作利交友，稳扎稳打即可。'
+  };
+
+  return{
+    palAnalysis:palAnalysis,
+    career:career,wealth:wealth,love:love,health:health,
+    dyTip:dyTips[comp.dyR]||dyTips.bh,
+    extremeWarn:comp.acc?getExtremeWarn(seed):null,
+    spSS:comp.spSS
+  };
+}
+
+// ====== 六、渲染 ======
+function render(comp,free,paid){
+  var html='';
+  var seed=parseInt(comp.digits.join(''),10);
+  var lvS={excellent:'s-h',good:'s-h',neutral:'s-m',caution:'s-l',warning:'s-l'};
+
+  // 号码总览
+  html+='<div class="rc"><h3>📊 号码总览</h3>';
+  html+='<div class="overview">';
+  for(var i=0;i<4;i++)html+='<div class="ov"><div class="lbl">'+comp.pal[i].n+'</div><div class="val">'+comp.pal[i].dg+'</div><div class="sub">'+comp.pal[i].el+' · '+comp.pal[i].g+'卦</div></div>';
+  html+='</div><div class="tags">';
+  html+='<span class="tt">主导：'+comp.domE+'('+comp.ec[comp.domE]+'/4位)</span>';
+  html+='<span class="tt">大运：'+comp.dy.n+'卦('+comp.dy.r[0]+'-'+comp.dy.r[1]+'岁)</span>';
+  if(comp.bz)html+='<span class="tw">豹子号</span>';
+  if(comp.acc)html+='<span class="tw">⚠冲撞组合</span>';
+  if(comp.ht)html+='<span class="tb">桃花</span>';
+  if(comp.hc)html+='<span class="tt">财库</span>';
+  html+='</div>';
+  html+='<div style="font-size:9px;color:var(--dim);margin-top:4px">自身宫：'+comp.self.el+' · '+comp.self.g+'卦 | 夫妻宫十神：'+comp.spSS+'</div></div>';
+
+  // === 免费版 ===
+  html+='<div class="rc"><h3>🧬 核心人格标签</h3>';
+  html+='<div class="tags">';
+  for(var i=0;i<free.tags.length;i++)html+='<span class="tt">'+free.tags[i]+'</span>';
+  html+='</div></div>';
+
+  var themes=[{k:'career',e:'💼',l:'事业'},{k:'wealth',e:'💰',l:'财富'},{k:'love',e:'💕',l:'感情'},{k:'health',e:'🏥',l:'健康'}];
+  for(var i=0;i<themes.length;i++){
+    var t=themes[i],a=free[t.k];
+    html+='<div class="rc"><h3>'+t.e+' '+t.l+'运势</h3>';
+    html+='<div class="fline"><span class="a">'+a.prefix+'：'+a.result+'</span></div></div>';
+  }
+
+  // 免费总结
+  html+='<div class="rc" style="border-left:3px solid var(--gold)"><h3>📋 简评</h3>';
+  html+='<div class="fline"><span class="a">夫妻宫十神为<span style="color:var(--gold)">'+comp.spSS+'</span>——'+free.spRelExp+'。</span>';
+  if(comp.acc)html+='<span class="b" style="color:#e06060">⚠ 号码含冲撞组合(火克金/金克木)，注意出行安全。</span>';
+  html+='<span class="b">如需精准年度分析，请解锁付费版。</span></div>';
+  html+='<div class="disclaimer">⚠ 温馨提示：本系统仅供娱乐，不作生活中或人生选择的参考意见。</div></div>';
+
+  // === 付费墙 ===
+  html+='<div class="pw" id="paywall"><h3>🔓 解锁深度报告</h3>';
+  html+='<p style="font-size:10px;color:var(--dim);line-height:1.7">查看完整分析：四宫十神详解 · 大运推算 · 各维度深度建议 · 风险预警</p>';
+  html+='<div class="price">¥0.1 <small>/ 次</small></div>';
+  html+='<div class="qr-img"><img src="pay_qr.jpg" alt="微信收款码" onerror="this.style.display=\'none\'"></div>';
+  html+='<p style="font-size:9px;color:var(--dim)">扫码支付0.1元后，输入解锁码</p>';
+  html+='<div class="ur"><input type="text" id="unlockCode" placeholder="输入解锁码" maxlength="20"><button id="unlockBtn">解锁</button></div>';
+  html+='<p style="font-size:8px;color:var(--dim);margin-top:4px">演示码：<b>8888</b></p></div>';
+
+  // === 付费版 ===
+  html+='<div id="detailSection" class="'+(isUnlocked?'unlocked':'locked')+'">';
+
+  // 深度人格
+  html+='<div class="rc"><h3>🧬 深度人格画像</h3><div class="dt">';
+  html+='<strong>核心标签</strong>';
+  for(var i=0;i<free.tags.length;i++)html+='<span class="tags" style="display:inline"><span class="tt">'+free.tags[i]+'</span></span> ';
+  html+='</div></div>';
+
+  // 四宫十神
+  html+='<div class="rc"><h3>🔮 四宫十神详解</h3><div class="dt">';
+  for(var i=0;i<paid.palAnalysis.length;i++){
+    var pa=paid.palAnalysis[i];
+    html+='<strong>'+pa.name+'（'+pa.el+'·'+pa.g+'卦）——十神：<span class="hl">'+pa.ss+'</span></strong>'+pa.exp+'<br>';
+  }
+  html+='</div></div>';
+
+  // 大运
+  html+='<div class="rc"><h3>⏳ 大运推算</h3><div class="dt">';
+  html+='<strong>当前：'+comp.dy.n+'卦大运（'+comp.dy.r[0]+'-'+comp.dy.r[1]+'岁）</strong>'+paid.dyTip+'<br>';
+  html+='</div></div>';
+
+  // 四维度深度
+  for(var i=0;i<themes.length;i++){
+    var t=themes[i],a=paid[t.k];
+    html+='<div class="rc"><h3>'+t.e+' '+t.l+'深度分析</h3><div class="dt">';
+    html+='<strong>'+a.prefix+'</strong>'+a.result+'<br>';
+    html+='<strong>建议</strong>'+a.advice+'<br>';
+    html+='</div></div>';
+  }
+
+  // 极端警告
+  if(paid.extremeWarn){
+    html+='<div class="rc" style="border:1px solid rgba(192,64,64,0.4)"><h3>⚠ 严重风险预警</h3><div class="dt">';
+    html+='<span class="warn">'+paid.extremeWarn+'</span>';
+    html+='</div></div>';
+  }
+
+  // 深度总结
+  html+='<div class="rc" style="border-left:3px solid var(--gold)"><h3>📋 深度总结</h3><div class="dt">';
+  html+='<strong>号码画像</strong>'+comp.domE+'占主导('+comp.ec[comp.domE]+'/4位)，'+(comp.domG.length>0?comp.domG.join('、')+'卦主导。':'卦象分散。')+'自身宫'+comp.self.el+'·'+comp.self.g+'卦，夫妻宫十神为'+comp.spSS+'。<br>';
+  html+='<strong>当前大运</strong>'+comp.dy.n+'卦大运，'+paid.dyTip+'<br>';
+  html+='<strong>一句话</strong>了解你的能量倾向，善用它，但不能依赖它——你才是自己人生的主人。<br>';
+  html+='<div class="disclaimer">⚠ 温馨提示：本系统仅供娱乐，不作生活中或人生选择的参考意见。</div>';
+  html+='</div></div>';
+
+  html+='</div>';
+
+  document.getElementById('resultsSection').innerHTML=html;
+  if(isUnlocked){var pw=document.getElementById('paywall');if(pw)pw.style.display='none'}
+}
+
+// ====== 七、事件 ======
+var isUnlocked=false;
+function showError(m){document.getElementById('errorMsg').textContent=m;document.getElementById('errorMsg').style.display='block'}
+
+function startAnalysis(){
+  try{
+    var ds=document.getElementById('phoneDigits').value.trim();
+    var dur=document.getElementById('duration').value,gd=document.getElementById('gender').value;
+    var ag=parseInt(document.getElementById('age').value);
+    if(!/^\d{4}$/.test(ds)){showError('请输入4位数字');return}
+    if(!dur){showError('请选择使用时长');return}
+    if(!gd){showError('请选择性别');return}
+    if(!ag||isNaN(ag)||ag<10||ag>100){showError('请输入有效年龄');return}
+    try{isUnlocked=localStorage.getItem('np_v4')==='true'}catch(e){isUnlocked=false}
+    var comp=parse(ds,ag,gd,parseFloat(dur));
+    var free=freeAnalysis(comp);
+    var paid=paidAnalysis(comp);
+    render(comp,free,paid);
+    document.getElementById('resultsSection').style.display='block';
+    document.getElementById('resultsSection').scrollIntoView({behavior:'smooth'});
+  }catch(e){showError('出错: '+e.message);console.error(e)}
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  document.getElementById('jsStatus').style.display='block';
+  try{isUnlocked=localStorage.getItem('np_v4')==='true'}catch(e){}
+  document.getElementById('analyzeBtn').addEventListener('click',startAnalysis);
+  document.getElementById('phoneDigits').addEventListener('input',function(){this.value=this.value.replace(/[^0-9]/g,'').slice(0,4)});
+  var rs=document.getElementById('resultsSection');
+  rs.addEventListener('click',function(e){if(e.target.closest('#unlockBtn'))unlock()});
+});
+function unlock(){var c=document.getElementById('unlockCode').value.trim();if(['8888','2026','6688'].indexOf(c)>=0){isUnlocked=true;try{localStorage.setItem('np_v4','true')}catch(e){}var pw=document.getElementById('paywall');if(pw)pw.style.display='none';var ds=document.getElementById('detailSection');if(ds){ds.classList.remove('locked');ds.classList.add('unlocked')}}else{alert('解锁码错误。演示码：8888')}}
+window.onerror=function(m){var el=document.getElementById('errorMsg');el.innerHTML='⚠ '+m;el.style.display='block';return false};
+</script>
+</body>
+</html>
